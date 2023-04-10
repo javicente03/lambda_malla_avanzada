@@ -3,7 +3,8 @@ const GeneratedConsulted = require("./src/GeneratedConsulted");
 const FindProductInEscanner = require("./src/sql/Products");
 const { default: axios } = require("axios");
 
-const handler = async (event) => {
+exports.handler = async (event, context) => {
+// const handler = async (event) => {
 
     let id_process = null;
     let processPending = null;
@@ -77,45 +78,45 @@ const handler = async (event) => {
     })
 }
 
-const http = require("http");
-const CreatePdf = require("./src/helpers/dealernet/pdf/CreatePdf");
-const GeneratedDataMalla = require("./src/GeneratedDataMalla");
-const config = require("./src/config");
-const host = 'localhost';
-const port = 5000;
+// const http = require("http");
+// const CreatePdf = require("./src/helpers/dealernet/pdf/CreatePdf");
+// const GeneratedDataMalla = require("./src/GeneratedDataMalla");
+// const config = require("./src/config");
+// const host = 'localhost';
+// const port = 5000;
 
-const requestListener = async function (req, res) {
+// const requestListener = async function (req, res) {
 
-    res.setHeader("Content-Type", "application/json");
-    const route = req.url.split("?")[0];
-    switch (route) {
-        case "/ejecute/":
-            // obtener las querys que vienen en la url
-            let id = null;
-            try {
-                id = req.url.split("?")[1].split("=")[1];                
-            } catch (error) {
-                console.log(error)
-            }
+//     res.setHeader("Content-Type", "application/json");
+//     const route = req.url.split("?")[0];
+//     switch (route) {
+//         case "/ejecute/":
+//             // obtener las querys que vienen en la url
+//             let id = null;
+//             try {
+//                 id = req.url.split("?")[1].split("=")[1];                
+//             } catch (error) {
+//                 console.log(error)
+//             }
 
-            const event = {
-                queryStringParameters: {
-                    id: id
-                }
-            }
+//             const event = {
+//                 queryStringParameters: {
+//                     id: id
+//                 }
+//             }
             
-            const response = await handler(event);
-            res.writeHead(200);
-            // res.end(JSON.stringify({message:"Proceso finalizado"}));
-            res.end(response.body);
-            break
-        default:
-            res.writeHead(404);
-            res.end(JSON.stringify({error:"Resource not found"}));
-    }
-};
+//             const response = await handler(event);
+//             res.writeHead(200);
+//             // res.end(JSON.stringify({message:"Proceso finalizado"}));
+//             res.end(response.body);
+//             break
+//         default:
+//             res.writeHead(404);
+//             res.end(JSON.stringify({error:"Resource not found"}));
+//     }
+// };
 
-const server = http.createServer(requestListener);
-server.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`);
-});
+// const server = http.createServer(requestListener);
+// server.listen(port, host, () => {
+//     console.log(`Server is running on http://${host}:${port}`);
+// });
