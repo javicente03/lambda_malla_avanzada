@@ -8,14 +8,32 @@ const GeneratedDataMalla = async (busqueda, rut, productosSeleccionados) => {
 
     const person = await obtenerDatosBasicosDB(rut.rut);
 
-    if (productosSeleccionados.morosidad) {
+    if (productosSeleccionados.morosidad && !rut.boolean_morosidad) {
         console.log('morosidad true')
         await connection.query(`
             UPDATE Malla_Avanzada_Detalle SET boolean_morosidad = 1 WHERE id_malla_avanzada_detalle = ?`, [rut.malla_avanzada_detalleId]);
+
+        // Obtener las deudas a las que el rut consultado esta asociado
+
+        const detalleMorosidad = await connection.query(`
+            SELECT * FROM Morosidades_Detalle_Sistema_Financiero WHERE data_searchId = ?`, [person.id_data_search]);
+
+        for (let index = 0; index < detalleMorosidad.length; index++) {
+            const element = detalleMorosidad[index];
+            
+            await connection.query(`INSERT INTO Bancos_Asociados_Malla_Avanzada (nombre, malla_avanzada_detalleId) VALUES (?, ?)`, [element.emisor, rut.malla_avanzada_detalleId]);
+        }
+
+        const sumaTotalDeuda = await connection.query(`
+            SELECT SUM(monto_deuda) AS total FROM Morosidades_Detalle_Sistema_Financiero WHERE data_searchId = ?
+            `, [person.id_data_search]);
+
+        await connection.query(`
+            UPDATE Malla_Avanzada_Detalle SET morosidad_cantidad = ? WHERE id_malla_avanzada_detalle = ?`, [sumaTotalDeuda[0].total, rut.malla_avanzada_detalleId]);
     }
 
     // DATA DEMANDAS INICIO -------------------------------------------------------------------------------------------------------------------------------
-    if (productosSeleccionados.demandas) {
+    if (productosSeleccionados.demandas && !rut.boolean_demandas) {
         console.log('demandas true')
         await connection.query(`
             UPDATE Malla_Avanzada_Detalle SET boolean_demandas = 1 WHERE id_malla_avanzada_detalle = ?`, [rut.malla_avanzada_detalleId]);
@@ -52,6 +70,14 @@ const GeneratedDataMalla = async (busqueda, rut, productosSeleccionados) => {
                 INSERT INTO Asociados_ROL_Demanda_Malla_Avanzada (nombre, rut, participacion, rol_demanda_malla_avanzadaId) VALUES (?, ?, ?, ?)
             `, [element.nombre, element.rut, element.participante, relacion_final]);  
         }
+
+        const cantidadDemandas = await connection.query(`
+            SELECT COUNT(*) AS cantidad FROM ComportamientoCivilDetalle WHERE data_searchId = ?
+            AND participacion = 'Demandado'
+        `, [person.id_data_search]);
+
+        await connection.query(`
+            UPDATE Malla_Avanzada_Detalle SET cantidad_demandas = ? WHERE id_malla_avanzada_detalle = ?`, [cantidadDemandas[0].cantidad, rut.malla_avanzada_detalleId]);
     }
 
     // DATA DEMANDAS FIN -------------------------------------------------------------------------------------------------------------------------------
@@ -140,7 +166,7 @@ const GeneratedDataMalla = async (busqueda, rut, productosSeleccionados) => {
     
                 // busca en nombre sin distincion de mayusculas y minusculas
                 const ya_existe_relacionado = await connection.query(`
-                    Asociados_RUC_Delito_Malla_Avanzada WHERE nombre LIKE ? AND delito LIKE ? AND ruc_delito_malla_avanzadaId = ?
+                    SELECT * FROM Asociados_RUC_Delito_Malla_Avanzada WHERE nombre LIKE ? AND delito LIKE ? AND ruc_delito_malla_avanzadaId = ?
                 `, [relacion.name, relacion.delito, relacion_final]);
     
                 if (ya_existe_relacionado.length > 0) {

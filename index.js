@@ -1,6 +1,7 @@
 const { ObtenerBusqueda, ObtenerRutsBusqueda, ChangeStatusBusqueda } = require("./src/sql/Malla_Avanzada");
 const GeneratedConsulted = require("./src/GeneratedConsulted");
 const FindProductInEscanner = require("./src/sql/Products");
+const { default: axios } = require("axios");
 
 const handler = async (event) => {
 
@@ -49,6 +50,14 @@ const handler = async (event) => {
                 await GeneratedDataMalla(processPending, rut, productosSeleccionados);
             }
 
+            await axios.get(`${config.URL_BACKEND_EMAIL}/api/email/malla-avanzada/${processPending.malla_avanzadaId}`).then(() => {
+                console.log('Se envio el email')
+            }).catch((error) => {
+                console.log('Error al enviar el email', error)
+            })
+
+            await ChangeStatusBusqueda(id_process, 'finished');
+
         } else {
             console.log('No hay procesos pendientes')
         }
@@ -69,9 +78,9 @@ const handler = async (event) => {
 }
 
 const http = require("http");
-const { default: axios } = require('axios');
 const CreatePdf = require("./src/helpers/dealernet/pdf/CreatePdf");
 const GeneratedDataMalla = require("./src/GeneratedDataMalla");
+const config = require("./src/config");
 const host = 'localhost';
 const port = 5000;
 
