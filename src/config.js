@@ -15,9 +15,5 @@ module.exports = {
     DATABASE_NAME: process.env.DATABASE_NAME,
     DATABASE_PORT: process.env.DATABASE_PORT,
     DOMAIN_FRONT: process.env.DOMAIN_FRONT,
-    AWS_SES_ACCESS_KEY: process.env.AWS_SES_ACCESS_KEY,
-    AWS_SES_SECRET_KEY: process.env.AWS_SES_SECRET_KEY,
-    AWS_SES_REGION: process.env.AWS_SES_REGION,
-    AWS_SES_ENDPOINT: process.env.AWS_SES_ENDPOINT,
     URL_BACKEND_EMAIL: process.env.URL_BACKEND_EMAIL,
 }
