@@ -2,6 +2,9 @@ const { ObtenerBusqueda, ObtenerRutsBusqueda, ChangeStatusBusqueda } = require("
 const GeneratedConsulted = require("./src/GeneratedConsulted");
 const FindProductInEscanner = require("./src/sql/Products");
 const { default: axios } = require("axios");
+const CreatePdf = require("./src/helpers/dealernet/pdf/CreatePdf");
+const GeneratedDataMalla = require("./src/GeneratedDataMalla");
+const config = require("./src/config");
 
 exports.handler = async (event, context) => {
 // const handler = async (event) => {
@@ -63,6 +66,7 @@ exports.handler = async (event, context) => {
             console.log('No hay procesos pendientes')
         }
     } catch (error) {
+        await ChangeStatusBusqueda(id_process, 'error');
         console.log(error)
     }
 
