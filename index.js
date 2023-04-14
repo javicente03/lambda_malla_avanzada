@@ -83,9 +83,6 @@ exports.handler = async (event, context) => {
 }
 
 // const http = require("http");
-// const CreatePdf = require("./src/helpers/dealernet/pdf/CreatePdf");
-// const GeneratedDataMalla = require("./src/GeneratedDataMalla");
-// const config = require("./src/config");
 // const host = 'localhost';
 // const port = 5000;
 
