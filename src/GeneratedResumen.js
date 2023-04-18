@@ -37,12 +37,12 @@ const GeneratedResumen = async (id) => {
         total_morosidad_empresas: 0,
         total_morosidad_socios: 0,
         total_bancos_detectados: 0,
-        companeros_delitos: 0,
-        delitos_bases_uaf: 0,
-        delitos_graves: 0,
-        otros_delitos: 0,
-        empresas_vinculadas_al_rut: 0,
-        socios_vinculados_al_rut: 0,
+        // companeros_delitos: 0,
+        // delitos_bases_uaf: 0,
+        // delitos_graves: 0,
+        // otros_delitos: 0,
+        // empresas_vinculadas_al_rut: 0,
+        // socios_vinculados_al_rut: 0,
     }
 
     // Obtener todas las empresas relacionadas al principal donde malla_avanzada_detalleId = id
@@ -192,14 +192,14 @@ const GeneratedResumen = async (id) => {
         WHERE MA.id_malla_avanzada = ?
     `, [id]);
 
-    const companeros_delitos = await connection.query(`
-        SELECT DISTINCT ARDMA.nombre, ARDMA.nombre
-        FROM Asociados_RUC_Delito_Malla_Avanzada ARDMA
-        LEFT JOIN RUC_Delito_Malla_Avanzada RDMA ON ARDMA.ruc_delito_malla_avanzadaId = RDMA.id
-        LEFT JOIN Malla_Avanzada_Detalle MAD ON RDMA.malla_avanzada_detalleId = MAD.id_malla_avanzada_detalle
-        LEFT JOIN Malla_Avanzada MA ON MAD.malla_avanzadaId = MA.id_malla_avanzada
-        WHERE MA.id_malla_avanzada = ? AND ARDMA.nombre != ?     
-    `, [id, malla[0].name_rut]);
+    // const companeros_delitos = await connection.query(`
+    //     SELECT DISTINCT ARDMA.nombre, ARDMA.nombre
+    //     FROM Asociados_RUC_Delito_Malla_Avanzada ARDMA
+    //     LEFT JOIN RUC_Delito_Malla_Avanzada RDMA ON ARDMA.ruc_delito_malla_avanzadaId = RDMA.id
+    //     LEFT JOIN Malla_Avanzada_Detalle MAD ON RDMA.malla_avanzada_detalleId = MAD.id_malla_avanzada_detalle
+    //     LEFT JOIN Malla_Avanzada MA ON MAD.malla_avanzadaId = MA.id_malla_avanzada
+    //     WHERE MA.id_malla_avanzada = ? AND ARDMA.nombre != ?     
+    // `, [id, malla[0].name_rut]);
 
     nombres_almacenados.sort((a, b) => b.cantidad - a.cantidad);
 
@@ -225,12 +225,12 @@ const GeneratedResumen = async (id) => {
     data.total_morosidad_empresas = total_morosidad_empresas;
     data.total_morosidad_socios = total_morosidad_socios;
     data.total_bancos_detectados = total_bancos_detectados[0].total_bancos;
-    data.companeros_delitos = companeros_delitos.length;
-    data.delitos_bases_uaf = cantidad_delitos_uaf;
-    data.delitos_graves = cantidad_delitos_graves;
-    data.otros_delitos = cantidad_delitos_otros;
-    data.empresas_vinculadas_al_rut = cantidad_socios_sociedades.filter((item) => !VerificadorPersonaNatural(item.rut)).length;
-    data.socios_vinculados_al_rut = cantidad_socios_sociedades.filter((item) => VerificadorPersonaNatural(item.rut)).length;
+    // data.companeros_delitos = companeros_delitos.length;
+    // data.delitos_bases_uaf = cantidad_delitos_uaf;
+    // data.delitos_graves = cantidad_delitos_graves;
+    // data.otros_delitos = cantidad_delitos_otros;
+    // data.empresas_vinculadas_al_rut = cantidad_socios_sociedades.filter((item) => !VerificadorPersonaNatural(item.rut)).length;
+    // data.socios_vinculados_al_rut = cantidad_socios_sociedades.filter((item) => VerificadorPersonaNatural(item.rut)).length;
 
     const link = await CreatePdfResumen(data, malla[0]);
 

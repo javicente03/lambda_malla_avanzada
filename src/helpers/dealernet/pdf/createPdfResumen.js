@@ -38,7 +38,7 @@ const CreatePdfResumen = async (data, malla) => {
     // socios_vinculados_al_rut: 0,
 
     const contentPdf = `
-        <h6 class="titleSeccion">Cuadro de resumen</h6>
+        <h6 class="titleSeccion">Cuadro de Resumen - Red de Investigación 360°</h6>
         <hr class="hrSeccion">
         <table class="tableBasic">
             <tbody>
@@ -113,40 +113,6 @@ const CreatePdfResumen = async (data, malla) => {
                 <tr class="trBasic trfz12">
                     <td>Total de bancos detectados</td>
                     <td>${data.total_bancos_detectados}</td>
-                </tr>
-            </tbody>
-        </table>
-        <h6 class="titleSeccion">Estructura criminal y UAF</h6>
-        <hr class="hrSeccion">
-        <table class="tableBasic">
-            <tbody>
-                <tr class="trBasic trfz12">
-                    <td>Compañeros de delitos</td>
-                    <td>${data.companeros_delitos}</td>
-                </tr>
-                <tr class="trBasic trfz12">
-                    <td>Delitos bases (UAF)</td>
-                    <td>${data.delitos_bases_uaf}</td>
-                </tr>
-                <tr class="trBasic trfz12">
-                    <td>Delitos graves</td>
-                    <td>${data.delitos_graves}</td>
-                </tr>
-                <tr class="trBasic trfz12">
-                    <td>Otros delitos</td>
-                    <td>${data.otros_delitos}</td>
-                </tr>
-                <tr class="trBasic trfz12">
-                    <td>Empresas vinculadas al RUT</td>
-                    <td>${data.empresas_vinculadas_al_rut}</td>
-                </tr>
-                <tr class="trBasic trfz12">
-                    <td>Socios vinculados al RUT</td>
-                    <td>${data.socios_vinculados_al_rut}</td>
-                </tr>
-                <tr class="trBasic trfz12">
-                    <td>Socios imputados en delitos</td>
-                    <td>${data.socios_imputados_en_delitos}</td>
                 </tr>
             </tbody>
         </table>
