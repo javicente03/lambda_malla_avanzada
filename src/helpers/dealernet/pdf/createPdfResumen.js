@@ -6,6 +6,7 @@ const Header = require('./header');
 const templateStart = require('./templateStart');
 const moment = require('moment');
 const formatAmount = require('../../../functions/formatAmount');
+const { logo64 } = require('./assets');
 
 const CreatePdfResumen = async (data, malla) => {
 
@@ -38,6 +39,7 @@ const CreatePdfResumen = async (data, malla) => {
     // socios_vinculados_al_rut: 0,
 
     const contentPdf = `
+        <img src="${logo64}" class="logo" style="width: 100px; height: 100px; margin: 0 auto; display: block;">
         <h6 class="titleSeccion">Cuadro de Resumen - Red de Investigación 360°</h6>
         <hr class="hrSeccion">
         <table class="tableBasic">
