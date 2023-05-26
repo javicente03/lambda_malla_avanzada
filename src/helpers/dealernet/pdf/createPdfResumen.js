@@ -165,11 +165,13 @@ const CreatePdfResumen = async (data, malla) => {
     // Downlaod the PDF
     const pdf = await page.pdf({
         path: path,
-        margin: { top: '110px', right: '40px', bottom: '80px', left: '40px' },
+        margin: { top: '150px', right: '40px', bottom: '80px', left: '40px' },
         printBackground: true,
         format: 'A4',
         headerTemplate: header,
-        footerTemplate: `<div></div>`,
+        footerTemplate: `<div style="margin: 0 auto; width: 100%; text-align: center; font-size: 9px;">
+            <p style="font-size: 9px; color: black; text-align: center; margin: 0 auto; width: 100%; padding-top: 10px">Informe no válido como medio de prueba</p>
+        </div>`,
         timeout: 900000,
         displayHeaderFooter: true
     });
